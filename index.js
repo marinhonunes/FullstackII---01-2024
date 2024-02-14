@@ -18,3 +18,6 @@ app.use('/funcionario', rotaFuncionario);
 app.listen(porta, host, () => {
     console.log(`Servidor escutando em http://${host}:${porta}.`);
 });
+
+
+// 1:36:31 segundos de aula 

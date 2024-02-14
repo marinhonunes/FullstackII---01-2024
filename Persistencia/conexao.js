@@ -6,10 +6,10 @@ export default async function conectar(){
     }
     else{
         const pool = mysql.createPool({
-            host: '129.146.68.51',
-            user: 'aluno22-pfsii', 
+            host:'129.146.68.51',
+            user:'aluno22-pfsii', 
             password:'aluno22-pfsii',  
-            database: 'backendaluno22pfsii',
+            database:'backendaluno22-pfsii',
             waitForConnections: true,
             connectionLimit: 10,
             maxIdle: 10, 
@@ -23,3 +23,4 @@ export default async function conectar(){
           return await pool.getConnection();
     }
 }
+
