@@ -1,4 +1,4 @@
-import DepartamentoDAO from "../Persistencia/funcionarioDAO.js";
+import DepartamentoDAO from "../Persistencia/FuncionarioDAO.js";
 
 export default class Departamento {
     #codigo;

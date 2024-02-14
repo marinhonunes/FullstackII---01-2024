@@ -1,4 +1,4 @@
-import Funcionario from "../Modelo/Funcionario.js;"; // Certifique-se de que o caminho do arquivo está correto.
+import Funcionario from "../Modelo/Funcionario.js"; // Certifique-se de que o caminho do arquivo está correto.
 import conectar from "./conexao.js";
 import Departamento from "../Modelo/departamento.js";
 

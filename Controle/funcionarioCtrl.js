@@ -1,4 +1,4 @@
-import Funcionario from "../Modelo/funcionario.js";
+import Funcionario from "../Modelo/Funcionario.js";
 
 export default class FuncionarioCtrl {
 

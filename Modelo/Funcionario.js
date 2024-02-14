@@ -1,4 +1,4 @@
-import FuncionarioDAO from "../Persistencia/FuncionarioDAO.js;"
+import FuncionarioDAO from "../Persistencia/FuncionarioDAO.js";
 
 export default class Funcionario {
     #codigo;
