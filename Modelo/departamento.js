@@ -1,10 +1,10 @@
-import DepartamentoDAO from "../Persistencia/FuncionarioDAO.js";
+import DepartamentoDAO from "../Persistencia/departamentoDAO.js";
 
 export default class Departamento {
     #codigo;
     #nome;
 
-    constructor(codigo = 0, nome = '') {
+    constructor(codigo=0, nome = '') {
         this.#codigo = codigo;
         this.#nome = nome;
     }
@@ -27,28 +27,28 @@ export default class Departamento {
 
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nome: this.#nome
+            codigo:this.#codigo,
+            nome:this.#nome
         }
     }
 
     async gravar() {
-        const departamentoDAO = new DepartamentoDAO();
-        await departamentoDAO.gravar(this);
+        const depDAO = new DepartamentoDAO();
+        await depDAO.gravar(this);
     }
 
     async excluir() {
-        const departamentoDAO = new DepartamentoDAO();
-        await departamentoDAO.excluir(this);
+        const depDAO = new DepartamentoDAO();
+        await depDAO.excluir(this);
     }
 
     async atualizar() {
-        const departamentoDAO = new DepartamentoDAO();
-        await departamentoDAO.atualizar(this);
+        const depDAO = new DepartamentoDAO();
+        await depDAO.atualizar(this);
     }
 
     async consultar(parametro) {
-        const departamentoDAO = new DepartamentoDAO();
-        return await departamentoDAO.consultar(parametro);
+        const depDAO = new DepartamentoDAO();
+        return await depDAO.consultar(parametro);
     }
 }

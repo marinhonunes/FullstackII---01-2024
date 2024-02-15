@@ -1,6 +1,6 @@
 import Departamento from "../Modelo/departamento.js"; // Certifique-se de que o caminho do arquivo está correto.
 import conectar from "./conexao.js";
-
+//DAO = Data Access Object -> Objeto de acesso aos dados
 export default class DepartamentoDAO {
     async gravar(departamento) {
         if (departamento instanceof Departamento) {
