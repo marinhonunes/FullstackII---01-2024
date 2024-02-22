@@ -20,4 +20,3 @@ app.listen(porta, host, () => {
 });
 
 
-// 1:49:31 segundos de aula - finalizar.
