@@ -3,6 +3,7 @@ import cors from 'cors';
 import rotaDepartamento from './Rotas/rotaDepartamento.js';
 import rotaFuncionario from './Rotas/rotaFuncionario.js';
 import rotaLogin from './Rotas/rotaLogin.js';
+import rotaOs from './Rotas/rotaOs.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import { verificarAcesso } from './Segurança/autenticacao.js';
@@ -26,12 +27,13 @@ app.use(session({
 }))
 
 app.use('/login',rotaLogin);
-//middleware
 app.use('/departamento', verificarAcesso, rotaDepartamento);
 app.use('/funcionario', verificarAcesso, rotaFuncionario);
+app.use('/ordem',rotaOs); //add middleware
 
 app.listen(porta, host, () => {
     console.log(`Servidor escutando em http://${host}:${porta}.`);
 });
+
 
 
