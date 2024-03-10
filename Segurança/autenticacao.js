@@ -19,23 +19,22 @@ export function autenticar(req, res) {
   }
 }
 
-export function verificarAcesso(req, res, next) {
-  const token = req.headers['authorization'];
-  let tokenDecodificado = '';
-
+export function verificarAcesso(requisicao, resposta, next) {
+  const token = requisicao.headers['authorization'];
+  let tokenDecodificado = undefined;
   if (token){
-    tokenDecodificado = verificarAssinatura(token);
+      tokenDecodificado = verificarAssinatura(token);
   }
-
   
-  if (tokenDecodificado.usuario.usuario == req.session.usuarioAutenticado) {
-    next();
+
+  if ((tokenDecodificado !== undefined) && (tokenDecodificado.usuario.usuario == requisicao.session.usuarioAutenticado)) {
+      next();
   }
   else{
-    res.status(401).json({
-      'status': false,
-      'mensagem': 'acesso não autorizado. Faça o login na API.'
-    })
+      resposta.status(401).json({
+          "status": false,
+          "mensagem": "Acesso não autorizado. Faça o login na aplicação!"
+      })
   }
 }
 
