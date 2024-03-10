@@ -1,28 +1,18 @@
 export default class ItemOrdemDeServico {
-  // #ordemDeServicoCodigo;
   #funcionarioCodigo;
   #descricaoOS;
   #precoUnitario;
 
   constructor(
-    // ordemDeServicoCodigo,
     funcionarioCodigo,
     descricaoOS,
     precoUnitario
   ) {
-    // this.#ordemDeServicoCodigo = ordemDeServicoCodigo;
     this.#funcionarioCodigo = funcionarioCodigo;
     this.#descricaoOS = descricaoOS;
     this.#precoUnitario = precoUnitario;
   }
 
-  // get ordemDeServicoCodigo() {
-  //   return this.#ordemDeServicoCodigo;
-  // }
-
-  // set ordemDeServicoCodigo(novoCodigo) {
-  //   this.#ordemDeServicoCodigo = novoCodigo;
-  // }
 
   get funcionarioCodigo() {
     return this.#funcionarioCodigo;
@@ -50,7 +40,6 @@ export default class ItemOrdemDeServico {
 
   toJSON() {
     return {
-      // ordemDeServicoCodigo: this.#ordemDeServicoCodigo,
       funcionarioCodigo: this.#funcionarioCodigo,
       descricaoOS: this.#descricaoOS,
       precoUnitario: this.#precoUnitario,
