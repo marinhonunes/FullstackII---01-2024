@@ -5,11 +5,9 @@ const rotaOs = new Router();
 const OsCtrl = new OrdemDeServicoCtrl();
 
 rotaOs
-// .get('/', OsCtrl.consultar)
-.get('/:termo', OsCtrl.consultar)
-.post('/', OsCtrl.gravar)
-// .patch('/', OsCtrl.atualizar)
-// .put('/', OsCtrl.atualizar)
-// .delete('/', OsCtrl.excluir);
+  .get("/:termo", OsCtrl.consultar)
+  .post("/", OsCtrl.gravar)
+  .delete("/", OsCtrl.excluir)
+  .put("/", OsCtrl.atualizar);
 
 export default rotaOs;

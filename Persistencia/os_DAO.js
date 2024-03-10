@@ -5,34 +5,102 @@ import ItemOrdemDeServico from "../Modelo/Item_Os.js";
 import conectar from "./conexao.js";
 
 export default class OrdemDeServicoDAO {
-async gravar(ordemDeServico) {
+  async gravar(ordemDeServico) {
     if (ordemDeServico instanceof OrdemDeServico) {
+      const conexao = await conectar();
+      await conexao.beginTransaction();
+      try {
+        const sql =
+          'INSERT INTO ordem_de_servico(cliente_codigo, data_ordem, total) VALUES(?,str_to_date(?,"%d/%m/%Y"),?)';
+        const parametros = [
+          ordemDeServico.cliente.codigo,
+          ordemDeServico.dataOrdem,
+          ordemDeServico.total,
+        ];
+        const retorno = await conexao.execute(sql, parametros);
+        ordemDeServico.codigo = retorno[0].insertId;
+        
+        const sql2 =
+          "INSERT INTO item_ordem_de_servico(ordem_de_servico_codigo, func_codigo, descricao_os, preco_unitario) VALUES(?, ?, ?, ?)";
+        for (const item of ordemDeServico.itens) {
+          let parametros2 = [
+            ordemDeServico.codigo,
+            item.funcionarioCodigo.codigo,
+            item.descricaoOS,
+            item.precoUnitario,
+          ];
+          await conexao.execute(sql2, parametros2);
+        }
+        await conexao.commit();
+      } catch (error) {
+        await conexao.rollback();
+        throw error;
+      }
+    }
+  }
+
+  async excluir(ordemDeServico) {
+    if (!ordemDeServico.codigo) {
+      throw new Error("Ordem de serviço não possui código válido.");
+    }
+
+    try {
+      const conexao = await conectar();
+      await conexao.execute("DELETE FROM ordem_de_servico WHERE codigo = ?", [
+        ordemDeServico.codigo,
+      ]);
+    } catch (error) {
+      throw new Error(`Erro ao excluir a ordem de serviço: ${error.message}`);
+    }
+  }
+
+  async alterar(ordemDeServico) {
+    if (!ordemDeServico.codigo) {
+        throw new Error("Ordem de serviço não possui código válido.");
+    }
+
+    try {
         const conexao = await conectar();
         await conexao.beginTransaction();
-        try {
-            //inserir na tabela pedido
-            const sql = 'INSERT INTO ordem_de_servico(cliente_codigo, data_ordem, total) VALUES(?,str_to_date(?,"%d/%m/%Y"),?)';
-            const parametros = [ordemDeServico.cliente.codigo, ordemDeServico.dataOrdem, ordemDeServico.total];
-            const retorno = await conexao.execute(sql, parametros);
-            ordemDeServico.codigo = retorno[0].insertId;
-            //inserir na tabela item pedido
-            const sql2 = "INSERT INTO item_ordem_de_servico(ordem_de_servico_codigo, func_codigo, descricao_os, preco_unitario) VALUES(?, ?, ?, ?)";
-            for (const item of ordemDeServico.itens) {
-                let parametros2 = [ordemDeServico.codigo, item.funcionarioCodigo.codigo, item.descricaoOS, item.precoUnitario];
-                await conexao.execute(sql2, parametros2);
-            }
-            await conexao.commit(); 
+
+        await conexao.execute(
+            "UPDATE ordem_de_servico SET cliente_codigo = ?, total = ?, data_ordem = ? WHERE codigo = ?",
+            [
+                ordemDeServico.cliente.codigo,
+                ordemDeServico.total,
+                ordemDeServico.dataOrdem,
+                ordemDeServico.codigo,
+            ]
+        );
+
+        await conexao.execute(
+            "DELETE FROM item_ordem_de_servico WHERE ordem_de_servico_codigo = ?",
+            [ordemDeServico.codigo]
+        );
+
+        for (const item of ordemDeServico.itens) {
+            await conexao.execute(
+                "INSERT INTO item_ordem_de_servico(ordem_de_servico_codigo, func_codigo, descricao_os, preco_unitario) VALUES (?, ?, ?, ?)",
+                [
+                    ordemDeServico.codigo,
+                    item.funcionarioCodigo.codigo,
+                    item.descricaoOS,
+                    item.precoUnitario
+                ]
+            );
         }
-        catch (error) {
-            await conexao.rollback(); 
-            throw error; 
-        }
+        await conexao.commit();
+    } catch (error) {
+        // Rollback da transação em caso de erro
+        await conexao.rollback();
+        throw new Error(`Erro ao alterar a ordem de serviço: ${error.message}`);
     }
 }
 
+
   async consultar(termoBusca) {
     if (isNaN(termoBusca)) {
-      return []; 
+      return [];
     }
 
     try {

@@ -29,7 +29,8 @@ app.use(session({
 app.use('/login',rotaLogin);
 app.use('/departamento', verificarAcesso, rotaDepartamento);
 app.use('/funcionario', verificarAcesso, rotaFuncionario);
-app.use('/ordem',verificarAcesso,rotaOs); //add middleware
+//app.use('/ordem',verificarAcesso,rotaOs); //add middleware
+app.use('/ordem',rotaOs);
 
 app.listen(porta, host, () => {
     console.log(`Servidor escutando em http://${host}:${porta}.`);
