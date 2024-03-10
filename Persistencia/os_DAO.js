@@ -39,20 +39,51 @@ export default class OrdemDeServicoDAO {
     }
   }
 
+  // async excluir(ordemDeServico) {
+  //   if (!ordemDeServico.codigo) {
+  //     throw new Error("Ordem de serviço não possui código válido.");
+  //   }
+
+  //   try {
+  //     const conexao = await conectar();
+  //     await conexao.execute("DELETE FROM ordem_de_servico WHERE codigo = ?", [
+  //       ordemDeServico.codigo,
+  //     ]);
+  //   } catch (error) {
+  //     throw new Error(`Erro ao excluir a ordem de serviço: ${error.message}`);
+  //   }
+  // }
+
   async excluir(ordemDeServico) {
     if (!ordemDeServico.codigo) {
-      throw new Error("Ordem de serviço não possui código válido.");
+        throw new Error("Ordem de serviço não possui código válido.");
     }
 
     try {
-      const conexao = await conectar();
-      await conexao.execute("DELETE FROM ordem_de_servico WHERE codigo = ?", [
-        ordemDeServico.codigo,
-      ]);
+        const conexao = await conectar();
+        await conexao.beginTransaction();
+
+        // Exclui os itens da ordem de serviço
+        await conexao.execute(
+            "DELETE FROM item_ordem_de_servico WHERE ordem_de_servico_codigo = ?",
+            [ordemDeServico.codigo]
+        );
+
+        // Exclui a ordem de serviço
+        await conexao.execute(
+            "DELETE FROM ordem_de_servico WHERE codigo = ?",
+            [ordemDeServico.codigo]
+        );
+
+        // Commit da transação
+        await conexao.commit();
     } catch (error) {
-      throw new Error(`Erro ao excluir a ordem de serviço: ${error.message}`);
+        // Rollback da transação em caso de erro
+        await conexao.rollback();
+        throw new Error(`Erro ao excluir a ordem de serviço: ${error.message}`);
     }
-  }
+}
+
 
   async alterar(ordemDeServico) {
     if (!ordemDeServico.codigo) {

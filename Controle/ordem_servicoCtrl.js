@@ -2,6 +2,7 @@ import Cliente from "../Modelo/Cliente.js";
 import OrdemDeServico from "../Modelo/ordem_Servico.js";
 import Funcionario from "../Modelo/Funcionario.js";
 import ItemOrdemDeServico from "../Modelo/Item_Os.js";
+import OrdemDeServicoDAO from "../Persistencia/os_DAO.js";
 
 export default class OrdemDeServicoCtrl {
   async gravar(requisicao, resposta) {
