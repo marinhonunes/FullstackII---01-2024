@@ -9,7 +9,7 @@ import session from 'express-session';
 import { verificarAcesso } from './Segurança/autenticacao.js';
 
 const host = '0.0.0.0';
-const porta = 3000;
+const porta = 3001;
 
 dotenv.config();
 
@@ -27,9 +27,13 @@ app.use(session({
 }))
 
 app.use('/login',rotaLogin);
-app.use('/departamento', verificarAcesso, rotaDepartamento);
-app.use('/funcionario', verificarAcesso, rotaFuncionario);
-app.use('/ordem',verificarAcesso,rotaOs); 
+// app.use('/departamento', verificarAcesso, rotaDepartamento);
+// app.use('/funcionario', verificarAcesso, rotaFuncionario);
+// app.use('/ordem',verificarAcesso,rotaOs); 
+
+app.use('/departamento', rotaDepartamento);
+app.use('/funcionario', rotaFuncionario);
+app.use('/ordem',rotaOs); 
 
 app.listen(porta, host, () => {
     console.log(`Servidor escutando em http://${host}:${porta}.`);
